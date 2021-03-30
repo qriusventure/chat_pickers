@@ -49,20 +49,20 @@ class EmojiPickerConfig {
   /// Determines the style given to the keyboard keys
 //  final ButtonMode buttonMode;
 
-  EmojiPickerConfig({
-    this.columns,
-    this.bgColor,
-    this.bgBarColor,
-    this.indicatorColor = Colors.white,
-    this.recommendKeywords = const [],
-    this.numRecommended,
-    this.noRecommendationsText,
-    this.noRecommendationsStyle,
-    this.noRecentsText,
-    this.noRecentsStyle,
-    this.categoryIcons,
+  EmojiPickerConfig(
+      {this.columns,
+      this.bgColor,
+      this.bgBarColor,
+      this.indicatorColor = Colors.white,
+      this.recommendKeywords = const [],
+      this.numRecommended,
+      this.noRecommendationsText,
+      this.noRecommendationsStyle,
+      this.noRecentsText,
+      this.noRecentsStyle,
+      this.categoryIcons,
 //      this.buttonMode,
-  });
+      });
 }
 
 class GiphyPickerConfig {
@@ -105,11 +105,13 @@ class ChatPickers extends HookWidget {
   final TextEditingController chatController;
   final EmojiPickerConfig emojiPickerConfig;
   final GiphyPickerConfig giphyPickerConfig;
+  final Color selectedBottomBarColor;
 
   const ChatPickers(
       {Key key,
       this.chatController,
       this.emojiPickerConfig,
+      this.selectedBottomBarColor,
       @required this.giphyPickerConfig})
       : super(key: key);
 
@@ -162,46 +164,47 @@ class ChatPickers extends HookWidget {
 //      )
     ];
 
-    return Container(
-      color: emojiPickerConfig.bgBarColor,
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: PageView(
-              physics: NeverScrollableScrollPhysics(),
-              controller: _pageController,
-              children: pages,
+    return Scaffold(
+          body: Container(
+        color: emojiPickerConfig.bgBarColor,
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: PageView(
+                physics: NeverScrollableScrollPhysics(),
+                controller: _pageController,
+                children: pages,
+              ),
             ),
-          ),
-          Container(
-            height: 35,
-            child: Stack(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    IconButton(
-                      color: _tabSelected.value == 0
-                          ? Colors.white
-                          : Colors.grey[500],
-                      icon: Icon(Icons.insert_emoticon),
-                      onPressed: () {
-                        _pageController.animateToPage(0,
-                            duration: Duration(milliseconds: 200),
-                            curve: Curves.linear);
-                      },
-                    ),
-                    IconButton(
-                      color: _tabSelected.value == 1
-                          ? Colors.white
-                          : Colors.grey[500],
-                      icon: Icon(MdiIcons.gif),
-                      onPressed: () {
-                        _pageController.animateToPage(1,
-                            duration: Duration(milliseconds: 200),
-                            curve: Curves.linear);
-                      },
-                    ),
+            Container(
+              height: 35,
+              child: Stack(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      IconButton(
+                        color: _tabSelected.value == 0
+                            ? selectedBottomBarColor
+                            : Colors.grey[500],
+                        icon: Icon(Icons.insert_emoticon),
+                        onPressed: () {
+                          _pageController.animateToPage(0,
+                              duration: Duration(milliseconds: 200),
+                              curve: Curves.linear);
+                        },
+                      ),
+                      IconButton(
+                        color: _tabSelected.value == 1
+                            ? selectedBottomBarColor
+                            : Colors.grey[500],
+                        icon: Icon(MdiIcons.gif),
+                        onPressed: () {
+                          _pageController.animateToPage(1,
+                              duration: Duration(milliseconds: 200),
+                              curve: Curves.linear);
+                        },
+                      ),
 //                    IconButton(
 //                      color:
 //                          _tabSelected == 2 ? Colors.white : Colors.grey[500],
@@ -212,8 +215,8 @@ class ChatPickers extends HookWidget {
 //                            curve: Curves.linear);
 //                      },
 //                    ),
-                  ],
-                ),
+                    ],
+                  ),
 
 //              Container(
 //                width: MediaQuery.of(context).size.width,
@@ -231,36 +234,37 @@ class ChatPickers extends HookWidget {
 //                    ),
 //                ),
 //              ),
-                Positioned(
-                  right: 35 / 4,
-                  bottom: 35 / 4,
-                  child: Column(
-                    children: <Widget>[
-                      Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          child: Icon(
-                            MdiIcons.backspace,
-                            size: 18,
-                            color: Colors.white,
+                  Positioned(
+                    right: 35 / 4,
+                    bottom: 35 / 4,
+                    child: Column(
+                      children: <Widget>[
+                        Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            child: Icon(
+                              MdiIcons.backspace,
+                              size: 18,
+                              color: Colors.white,
+                            ),
+                            onTap: () {
+                              try {
+                                chatController.text = chatController.text
+                                    .substring(0, chatController.text.length - 2);
+                              } catch (e) {
+                                chatController.clear();
+                              }
+                            },
                           ),
-                          onTap: () {
-                            try {
-                              chatController.text = chatController.text
-                                  .substring(0, chatController.text.length - 2);
-                            } catch (e) {
-                              chatController.clear();
-                            }
-                          },
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          )
-        ],
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
