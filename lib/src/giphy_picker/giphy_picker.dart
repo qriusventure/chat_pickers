@@ -68,7 +68,6 @@ class GiphyPicker {
               width: 400,
               height: 280,
               child: GiphySearchView(onClose: onClose),
-              color: Colors.white,
             ),
             bottom: false),
         apiKey: apiKey,
