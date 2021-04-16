@@ -245,7 +245,7 @@ class ChatPickers extends HookWidget {
                             child: Icon(
                               MdiIcons.backspace,
                               size: 18,
-                              color: Colors.white,
+                              color: selectedBottomBarColor,
                             ),
                             onTap: () {
                               try {
