@@ -12,7 +12,7 @@ dependencies:
 
   http: ^0.12.2
   giphy_client: ^0.2.0        # for giphy picker
-  shared_preferences: ^0.5.12+4      # for keeping recent picked emojies
+  shared_preferences: ^2.0.3     # for keeping recent picked emojies
   material_design_icons_flutter: ^4.0.5955    # for icons
 
   # base package implementation of choosing emojies on each platform
