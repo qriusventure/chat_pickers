@@ -57,7 +57,7 @@ class GiphyImage extends StatefulWidget {
     assert(url != null);
 
     final response =
-        await (client ?? Client()).get(url, headers: {'accept': 'image/*'});
+        await (client ?? Client()).get(Uri.parse(url), headers: {'accept': 'image/*'});
 
     if (response.statusCode == 200) {
       return response.bodyBytes;
